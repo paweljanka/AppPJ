@@ -7,3 +7,24 @@
 //
 
 import Foundation
+
+protocol DetailsPresenting {
+    func viewCreated()
+}
+
+final class DetailsPresenter: DetailsPresenting {
+
+    private let selectedItem: DisplayableItem
+
+    init(selectedItem: DisplayableItem) {
+        self.selectedItem = selectedItem
+    }
+
+    weak var view: DetailsViewScene?
+    
+    // MARK: - DetailsPresenting
+
+    func viewCreated() {
+        view?.updateView(withItem: selectedItem)
+    }
+}

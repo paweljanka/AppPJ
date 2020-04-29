@@ -46,7 +46,6 @@ final class ItemTableViewCell: UITableViewCell {
             ]
         )
         thumbnailImageView.contentMode = .scaleAspectFit
-        #warning("fix widthAnchor")
     }
 
     private func setupTitleLabel() {
@@ -58,9 +57,7 @@ final class ItemTableViewCell: UITableViewCell {
             ]
         )
         
-        titleLabel.textColor = .black
-        #warning("create colors palette")
+        titleLabel.textColor = UIColor.Palette.black
         titleLabel.numberOfLines = 3
     }
-
 }

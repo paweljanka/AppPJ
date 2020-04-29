@@ -15,10 +15,11 @@ protocol NetworkProviding {
 final class Networking: NetworkProviding  {
 
     private let baseUrl = "https://jsonplaceholder.typicode.com/photos?_limit=20"
+    private let paginationBaseUrl = "&_start="
     private let decoder = JSONDecoder()
 
-    func getItems(forLimit: Int, completion: @escaping (Result<[Item], Error>) -> Void) {
-        guard let url = URL(string: baseUrl) else {
+    func getItems(forLimit limit: Int, completion: @escaping (Result<[Item], Error>) -> Void) {
+        guard let url = URL(string: baseUrl+paginationBaseUrl+"\(limit)") else {
             return
         }
         

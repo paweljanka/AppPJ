@@ -6,4 +6,11 @@
 //  Copyright © 2020 Pawel Janka. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+extension UITableViewCell {
+
+    static var identifier: String {
+        return String(describing: self)
+    }
+}

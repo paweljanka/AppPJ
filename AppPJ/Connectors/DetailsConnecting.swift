@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+protocol DetailsConnecting {
+    func presentDetailsView(withItem: DisplayableItem)
+}

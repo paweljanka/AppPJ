@@ -12,17 +12,22 @@ protocol ListPresenting {
     func viewCreated()
     func numberOfSections() -> Int
     func item(forIndex: IndexPath) -> DisplayableItem
+    func selectedItem(indexPath: IndexPath)
+    func fetchNewItems(forIndexPath: IndexPath)
 }
 
 final class ListPresenter: ListPresenting {
 
     private let networkProviding: NetworkProviding
+    private let connector: DetailsConnecting
     private var displayableItems = [DisplayableItem]()
+    private var fetchingItemsLimit = 0
 
     weak var view: ListViewScene?
 
-    init(networkProviding: NetworkProviding) {
+    init(networkProviding: NetworkProviding, connector: DetailsConnecting) {
         self.networkProviding = networkProviding
+        self.connector = connector
     }
 
     // MARK: -  ListPresenting
@@ -39,10 +44,22 @@ final class ListPresenter: ListPresenting {
         return displayableItems[index.row]
     }
 
+    func selectedItem(indexPath: IndexPath) {
+        let selectedItem = displayableItems[indexPath.row]
+        connector.presentDetailsView(withItem: selectedItem)
+    }
+
+    func fetchNewItems(forIndexPath indexPath: IndexPath) {
+        if indexPath.row == displayableItems.count - 1 {
+            fetchingItemsLimit += 20
+            fetchItems()
+        }
+    }
+
     // MARK: Private Methods
 
     private func fetchItems() {
-        networkProviding.getItems(forLimit: 20) { [weak self] result in
+        networkProviding.getItems(forLimit: fetchingItemsLimit) { [weak self] result in
             guard let self = self else { return }
             
             switch result {

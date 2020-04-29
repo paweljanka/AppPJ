@@ -6,4 +6,12 @@
 //  Copyright © 2020 Pawel Janka. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+extension UIColor {
+
+    struct Palette {
+        static let black = UIColor.black
+        static let white = UIColor.white
+    }
+}

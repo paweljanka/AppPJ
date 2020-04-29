@@ -12,7 +12,7 @@ protocol ListViewScene: AnyObject {
     func reloadData()
 }
 
-final class ListView: UIViewController, ListViewScene, UITableViewDataSource {
+final class ListView: UIViewController, ListViewScene, UITableViewDataSource, UITableViewDelegate {
 
     private let tableView = UITableView()
     private let presenter: ListPresenting
@@ -20,8 +20,6 @@ final class ListView: UIViewController, ListViewScene, UITableViewDataSource {
     init(presenter: ListPresenting) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-
-        title = "My items"
     }
     
     required init?(coder: NSCoder) {
@@ -31,7 +29,8 @@ final class ListView: UIViewController, ListViewScene, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        title = "My items"
+        view.backgroundColor = UIColor.Palette.white
         layoutViews()
     }
 
@@ -57,6 +56,7 @@ final class ListView: UIViewController, ListViewScene, UITableViewDataSource {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.register(ItemTableViewCell.self, forCellReuseIdentifier: ItemTableViewCell.identifier)
         tableView.rowHeight = 100.0
     }
@@ -73,7 +73,7 @@ extension ListView {
     }
 }
 
-// MARK: - UITableViewDataSource
+// MARK: - UITableViewDataSource, UITableViewDelegate
 
 extension ListView {
     
@@ -86,5 +86,12 @@ extension ListView {
         cell.update(withItem: presenter.item(forIndex: indexPath))
         return cell
     }
-}
 
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        presenter.fetchNewItems(forIndexPath: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.selectedItem(indexPath: indexPath)
+    }
+}

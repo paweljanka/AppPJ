@@ -6,4 +6,18 @@
 //  Copyright © 2020 Pawel Janka. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+extension UIView {
+
+    func addSubview(_ view: UIView, constraints: [NSLayoutConstraint]) {
+        addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    func corner(withRadius radius: CGFloat) {
+        layer.cornerRadius = radius
+        clipsToBounds = true
+    }
+}

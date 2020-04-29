@@ -7,3 +7,16 @@
 //
 
 import Foundation
+import Kingfisher
+
+extension UIImageView {
+
+    func setImageAndCache(imagePath: String) {
+        guard let url = URL(string: imagePath) else {
+            return
+        }
+        self.kf.indicatorType = .activity
+        self.kf.setImage(with: url)
+    }
+}
+
